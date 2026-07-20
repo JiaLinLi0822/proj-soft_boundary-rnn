@@ -121,11 +121,14 @@ def _plot_hidden(trials, out_path, color_column, cmap, colorbar_label, max_time_
         segments.extend(np.stack([points[:-1], points[1:]], axis=1))
         segment_colors.extend(plt.get_cmap(cmap)(norm(values[1:])))
     ax.add_collection(
-        LineCollection(segments, colors=segment_colors, linewidths=0.6, alpha=0.15)
+        LineCollection(
+            segments, colors=segment_colors, linewidths=0.6, alpha=0.15,
+            rasterized=True,
+        )
     )
     scatter = ax.scatter(
         frame["h0"], frame["h1"], c=colors, cmap=cmap, norm=norm,
-        s=12, alpha=0.8, edgecolors="none",
+        s=12, alpha=0.8, edgecolors="none", rasterized=True,
     )
 
     if xlim is None:
@@ -136,6 +139,8 @@ def _plot_hidden(trials, out_path, color_column, cmap, colorbar_label, max_time_
         padding = 0.03 * max(frame["h1"].max() - frame["h1"].min(), 1e-6)
         ylim = frame["h1"].min() - padding, frame["h1"].max() + padding
     ax.set(xlim=xlim, ylim=ylim, xlabel="Hidden unit 1", ylabel="Hidden unit 2")
+    # Lines + scatter become one embedded bitmap in SVG (axes/colorbar stay vector).
+    ax.set_rasterization_zorder(2)
     
     fig.colorbar(scatter, ax=ax, pad=0.02).set_label(colorbar_label)
     _save(fig, out_path)
@@ -146,7 +151,7 @@ def plot_hidden_by_timestep(trials, out_path, cum_col="cumulative_logLR", max_ti
 
 
 def plot_hidden_by_evidence(trials, out_path, cum_col="cumulative_logLR", max_time_step=15, xlim=None, ylim=None):
-    _plot_hidden(trials, out_path, cum_col, "RdBu", "Cumulative evidence (LLR)", max_time_step, cum_col, xlim, ylim)
+    _plot_hidden(trials, out_path, cum_col, "RdBu_r", "Cumulative evidence (LLR)", max_time_step, cum_col, xlim, ylim)
 
 
 def plot_hidden_by_policy(
@@ -202,7 +207,8 @@ def plot_hidden_by_policy(
     ax.set_box_aspect(1)
     side.axis("off")
     ax.imshow(
-        rgba.transpose(1, 0, 2), extent=(*xlim, *ylim), origin="lower", aspect="auto"
+        rgba.transpose(1, 0, 2), extent=(*xlim, *ylim), origin="lower", aspect="auto",
+        rasterized=True,
     )
     ax.set(xlim=xlim, ylim=ylim, xlabel="Hidden unit 1", ylabel="Hidden unit 2")
 
@@ -217,15 +223,17 @@ def plot_hidden_by_policy(
         labels = dict(zip(
             shape_order, ["-0.9", "-0.7", "-0.5", "-0.3", "+0.3", "+0.5", "+0.7", "+0.9"]
         ))
-        ax.plot(points[:, 0], points[:, 1], color="0.4", lw=1.5, zorder=2)
+        ax.plot(points[:, 0], points[:, 1], color="0.4", lw=1.5, zorder=2, rasterized=True)
         for shape in shape_order:
             selected = shapes == shape
             if selected.any():
                 ax.scatter(
                     points[selected, 0], points[selected, 1],
                     marker=markers[shape], facecolor="white", edgecolor="black",
-                    linewidth=0.8, s=48, zorder=3,
+                    linewidth=0.8, s=48, zorder=3, rasterized=True,
                 )
+        # Bundle heatmap + trajectory into one SVG raster layer.
+        ax.set_rasterization_zorder(4)
         side.legend(
             handles=[
                 Line2D(
@@ -260,8 +268,8 @@ def plot_hidden_by_policy(
         triangle, extent=(0, 1, 0, height), origin="lower", aspect="equal"
     )
     triangle_ax.plot([0, 1, 0.5, 0], [0, 0, height, 0], color="0.25", lw=0.8)
-    triangle_ax.text(0, -0.07, r"choose $H_0$", color="red", ha="center", va="top", fontsize=9)
-    triangle_ax.text(1, -0.07, r"choose $H_1$", color="blue", ha="center", va="top", fontsize=9)
+    triangle_ax.text(0, -0.07, r"choose $H_1$", color="red", ha="center", va="top", fontsize=9)
+    triangle_ax.text(1, -0.07, r"choose $H_0$", color="blue", ha="center", va="top", fontsize=9)
     triangle_ax.text(0.5, height + 0.06, "Sample", color="green", ha="center", va="bottom", fontsize=9)
     triangle_ax.set(xlim=(-0.18, 1.18), ylim=(-0.15, height + 0.15))
     triangle_ax.axis("off")

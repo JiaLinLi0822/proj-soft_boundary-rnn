@@ -35,6 +35,8 @@ def parse_args():
         "--ckpt",
         default="fit_tinyrnns/runs/nested_cv/MonkeyJ/nestedcv_20260705_204203_seed0/cv_models/outer08/h2_l1_1p00000000em03/inner08.pt",
     )
+    # "fit_tinyrnns/runs/nested_cv/MonkeyJ/nestedcv_20260705_204203_seed0/cv_models/outer08/h2_l1_1p00000000em03/inner08.pt"
+    # "fit_tinyrnns/runs/nested_cv/MonkeyE/nestedcv_20260705_231541_seed0/cv_models/outer01/h2_l1_1p00000000em03/inner07.pt"
     parser.add_argument("--mat", default=None)
     parser.add_argument("--outdir", default=None)  # None uses fit_tinyrnns/results
     parser.add_argument("--device", default="auto")

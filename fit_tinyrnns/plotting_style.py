@@ -20,5 +20,5 @@ def _save(fig, path, dpi=500):
     stem, _ = os.path.splitext(path)
     os.makedirs(os.path.dirname(stem) or ".", exist_ok=True)
     fig.savefig(stem + ".png", dpi=dpi, bbox_inches="tight")
-    fig.savefig(stem + ".svg", bbox_inches="tight")
+    fig.savefig(stem + ".svg", dpi=dpi, bbox_inches="tight")
     plt.close(fig)

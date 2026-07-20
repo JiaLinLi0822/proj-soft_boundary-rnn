@@ -1,0 +1,62 @@
+from __future__ import annotations
+
+from typing import Dict, List, Tuple
+
+
+def ecodeRTshape() -> Tuple[Dict[str, int], List[str], List[int]]:
+    """Python equivalent of ecodeRTshape.m lookup table."""
+    codes = {
+        "E_START_TRIAL": 4900,
+        "E_DEF_TRIAL": 4901,
+        "E_END_DEF_TRIAL": 4902,
+        "E_END_TRIAL": 4903,
+        "E_FP_ON": 4904,
+        "E_FP_OFF": 4905,
+        "E_FP_ACQUIRED": 4906,
+        "E_STIM_ON": 4907,
+        "E_STIM_OFF": 4908,
+        "E_TARGET_ON": 4909,
+        "E_TARGET_OFF": 4910,
+        "E_TARGET1_ACQUIRED": 4911,
+        "E_REWARD": 4912,
+        "E_CORRECT": 4913,
+        "E_WRONG": 4914,
+        "E_BREAK": 4915,
+        "E_IGNORE": 4916,
+        "E_CLEAR_SCREEN": 4917,
+        "E_SACCADE": 4918,
+        "E_PAUSE": 4919,
+        "E_TRIAL_INFO": 4920,
+        "E_TARGET2_ACQUIRED": 4921,
+        "E_TARGET_DIM": 4922,
+        "E_RESET": 4923,
+        "E_VERSION": 4924,
+        "E_REWARD_TYPE": 4925,
+        "E_FP2_ON": 4926,
+        "E_FEEDBACK_ON": 4927,
+        "E_SHAPE_TASK": 4928,
+        "E_OVERLAP_SACCADE": 4929,
+        "E_MEMORY_SACCADE": 4930,
+        "E_CONFIGURE": 4931,
+        "E_TRUE_SACCADE": 4932,
+        "E_PARAM": 7000,
+        "E_STRING": 8000,
+        "E_SPIKE": 601,
+    }
+    event_name = [
+        "E-START-TRIAL", "E-DEF-TRIAL", "E-END-DEF-TRIAL", "E-END-TRIAL",
+        "E-FP-ON", "E-FP-OFF", "E-FP-ACQUIRED", "E-STIM-ON", "E-STIM-OFF",
+        "E-TARGET-ON", "E-TARGET-OFF", "E-TARGET-ACQUIRED", "E-REWARD",
+        "E-CORRECT", "E-WRONG", "E-BREAK", "E-IGNORE", "E-CLEAR-SCREEN",
+        "E-SACCADE", "E-PAUSE", "E-TRIAL-INFO", "E-TARGET2-ACQUIRED",
+        "E-TARGET-DIM", "E-RESET", "E_VERSION", "E_REWARD_TYPE", "E_FP2_ON",
+        "E_FEEDBACK_ON", "E_SHAPE_TASK", "E_OVERLAP_SACCADE", "E_MEMORY_SACCADE",
+        "E_CONFIGURE", "E_TRUE_SACCADE", "E-PARAM", "E-STRING", "E-SPIKE",
+    ]
+    event_code = [
+        4900, 4901, 4902, 4903, 4904, 4905, 4906, 4907, 4908, 4909, 4910,
+        4911, 4912, 4913, 4914, 4915, 4916, 4917, 4918, 4919, 4920, 4921,
+        4922, 4923, 4924, 4925, 4926, 4927, 4928, 4929, 4930, 4931, 4932,
+        7000, 8000, 601,
+    ]
+    return codes, event_name, event_code

@@ -1,0 +1,31 @@
+# Local environment and editor state
+.DS_Store
+.venv/
+.vscode/
+.cache/
+.mplconfig/
+
+# Python/Jupyter generated files
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Large/generated experiment artifacts
+fit_tinyrnns.zip
+fit_tinyrnns/results/
+fit_tinyrnns/runs/
+results/
+runs/
+train_taskoptrnns/results/
+
+# Model checkpoints and serialized training outputs
+*.pt
+*.pth
+*.pkl
+*.pickle
+*.p
+
+# Office temporary lock files
+~$*
+neuralSPRT/data/*.mat

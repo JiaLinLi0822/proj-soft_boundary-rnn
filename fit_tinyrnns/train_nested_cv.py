@@ -38,7 +38,7 @@ def main():
     parser.add_argument("--use-num-accum", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--remove-trump-trials", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--last-accum-override", type=float)
-    parser.add_argument("--outdir", default="fit_tinyrnns/runs/nested_cv")
+    parser.add_argument("--outdir", default="runs/nested_cv")
     args = parser.parse_args()
 
     project_dir = Path(__file__).resolve().parent.parent

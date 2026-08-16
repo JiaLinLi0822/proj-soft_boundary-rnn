@@ -165,21 +165,23 @@ def plot_sampling_variability(trials, out_path, timesteps=range(1, 11), evidence
         if len(samples) >= min_bin_count:
             values[timesteps.index(timestep), index] = np.std(samples, ddof=1)
 
+    t = np.asarray(timesteps, dtype=float)
+    x_edges = np.r_[t - 0.5, t[-1] + 0.5]
+    xlim = (float(x_edges[0]), float(x_edges[-1]))
+
     set_style()
-    fig, axes = plt.subplots(1, 2, figsize=(6.55, 2.55))
+    fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.4), layout="constrained")
     for ax in axes:
         ax.grid(False)
-    axes[0].plot(timesteps, np.nanmean(values, axis=1), "s--", color="black", lw=2)
+    axes[0].set_box_aspect(1)
+    axes[0].plot(t, np.nanmean(values, axis=1), "s--", color="black", lw=2)
     axes[0].set(xlabel="Timestep", ylabel="Variability of p(sample) [std]")
-    heatmap = axes[1].pcolormesh(
-        np.r_[np.asarray(timesteps) - 0.5, timesteps[-1] + 0.5],
-        edges,
-        values.T,
-        cmap="viridis",
-    )
+    heatmap = axes[1].pcolormesh(x_edges, edges, values.T, cmap="viridis")
     axes[1].set(xlabel="Timestep", ylabel="Cumulative evidence (LLR)")
+    for ax in axes:
+        ax.set_xlim(xlim)
+        ax.set_xticks(t)
     fig.colorbar(heatmap, ax=axes[1]).set_label("Variability of p(sample) [std]")
     if title:
         fig.suptitle(title)
-    fig.tight_layout()
     _save(fig, out_path)

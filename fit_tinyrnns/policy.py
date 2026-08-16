@@ -170,18 +170,30 @@ def plot_sampling_variability(trials, out_path, timesteps=range(1, 11), evidence
     xlim = (float(x_edges[0]), float(x_edges[-1]))
 
     set_style()
-    fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.4), layout="constrained")
+    # Explicit geometry: left axes is a physical square; both panels share the
+    # same axes width so identical xlim/xticks line up visually.
+    fig_w, fig_h = 7.4, 3.55
+    panel = 2.55
+    fig = plt.figure(figsize=(fig_w, fig_h))
+    left = 0.10
+    bottom = 0.18
+    width = panel / fig_w
+    height = panel / fig_h
+    axes = [
+        fig.add_axes([left, bottom, width, height]),
+        fig.add_axes([left + width + 0.11, bottom, width, height]),
+    ]
+    cax = fig.add_axes([left + 2 * width + 0.125, bottom, 0.025, height])
     for ax in axes:
         ax.grid(False)
-    axes[0].set_box_aspect(1)
-    axes[0].plot(t, np.nanmean(values, axis=1), "s--", color="black", lw=2)
+    axes[0].plot(t, np.nanmean(values, axis=1), "s--", color="black", lw=2, ms=5)
     axes[0].set(xlabel="Timestep", ylabel="Variability of p(sample) [std]")
     heatmap = axes[1].pcolormesh(x_edges, edges, values.T, cmap="viridis")
     axes[1].set(xlabel="Timestep", ylabel="Cumulative evidence (LLR)")
     for ax in axes:
         ax.set_xlim(xlim)
         ax.set_xticks(t)
-    fig.colorbar(heatmap, ax=axes[1]).set_label("Variability of p(sample) [std]")
+    fig.colorbar(heatmap, cax=cax).set_label("Variability of p(sample) [std]")
     if title:
         fig.suptitle(title)
     _save(fig, out_path)

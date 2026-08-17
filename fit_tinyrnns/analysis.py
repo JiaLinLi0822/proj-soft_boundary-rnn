@@ -12,14 +12,6 @@ from behavior import (
     plot_decision_threshold_distribution,
     trials_from_dataset,
 )
-from representation import (
-    compute_representation_noise,
-    plot_hidden_by_evidence,
-    plot_hidden_by_policy,
-    plot_hidden_by_timestep,
-    plot_representation_noise_heatmap,
-    plot_representation_noise_over_time,
-)
 from policy import (
     plot_psample,
     plot_psample_scatter,
@@ -124,32 +116,6 @@ def main() -> None:
         evidence_bin_width=0.1,
         min_bin_count=30,
         title=None,
-    )
-
-    # Plot the hidden states
-    plot_hidden_by_timestep(
-            model_trials,
-            out_path=str(outdir / "hidden_by_timestep"),
-            max_time_step=10,
-        )
-    plot_hidden_by_evidence(
-            model_trials,
-            out_path=str(outdir / "hidden_by_evidence"),
-            max_time_step=10,
-        )
-    plot_hidden_by_policy(
-            model_trials,
-            out_path=str(outdir / "hidden_by_policy"),
-            max_time_step=10,
-            n_bins=100,
-            min_bin_count=1,
-        )
-    noise, noise_by_time = compute_representation_noise(model_trials)
-    plot_representation_noise_over_time(
-        noise_by_time, str(outdir / "representation_noise_over_time")
-    )
-    plot_representation_noise_heatmap(
-        noise, str(outdir / "representation_noise_heatmap")
     )
 
     summary = {

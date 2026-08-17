@@ -31,6 +31,10 @@ def collect_psample_observations(trials, max_time_step=None):
                 "p_sample": policy[time_step, 2],
                 "cumulative_logLR": trial.cum_loglr_path[time_step],
             }
+            if trial.hidden_path is not None:
+                row.update(
+                    {f"h{i}": value for i, value in enumerate(trial.hidden_path[time_step])}
+                )
             rows.append(row)
     return pd.DataFrame(rows)
 

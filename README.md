@@ -6,7 +6,7 @@ Code for studying **soft decision boundaries** in recurrent networks on a sequen
 2. **Task-optimized RNNs** trained with A2C on a matching sequential-inference environment (`train_taskoptrnns/`)
 3. **Data-fitted tiny GRUs** that imitate monkey choices trial-by-trial (`fit_tinyrnns/`)
 
-Together they support comparing hard vs soft stopping policies and psychometric behavior.
+Together they support comparing hard vs soft stopping policies, psychometric behavior, and low-dimensional latent dynamics.
 
 ---
 

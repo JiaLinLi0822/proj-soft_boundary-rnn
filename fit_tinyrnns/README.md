@@ -10,7 +10,7 @@ The package covers the full workflow:
 
 1. Build datasets from Kira-lab `.mat` files.
 2. Train one or a grid of models (with optional nested cross-validation).
-3. Load fitted checkpoints to run diagnostics, behaviour reproduction,
+3. Load fitted checkpoints to run diagnostics, PCA, behaviour reproduction,
    and likelihood-vs-capacity analyses.
 
 ---
@@ -28,6 +28,7 @@ fit_tinyrnns/
 ├── simulate.py                # Generate trained-RNN rollout data
 ├── behavior.py                # Monkey/RNN behavior processing and plots
 ├── policy.py                  # RNN policy processing and plots
+├── representation.py          # RNN hidden-state and representation-noise plots
 ├── environment.py             # Kira-style trial environment
 ├── utils.py                   # get_device / set_seed / shape encoding / load_mat73
 │
@@ -50,9 +51,10 @@ fit_tinyrnns/
 | `trainer.py` | Model operations (`rollout_sequence`, `compute_batch_loss`, `recurrent_l1_penalty`, `evaluate`) plus `Trainer`. Callers use PyTorch `DataLoader` directly. |
 | `nested_cv.py` | `NestedCV(...).fit(data)` returns a flat `DataFrame` and saves per-inner plus per-outer checkpoints. |
 | `checkpoints.py` | `save_checkpoint`, `load_policy_checkpoint`, `save_loss_curve_png`. |
-| `simulate.py` | `Trial` and policy rollouts; no analysis or plotting. |
+| `simulate.py` | `Trial`, normal rollouts, and matched-evidence rollouts; no analysis or plotting. |
 | `behavior.py` | Monkey/RNN behavior conversion, summaries, and plots. |
 | `policy.py` | Policy tables, evidence binning, and p(sample) plots. |
+| `representation.py` | Hidden-state, state-space, and representation-noise plots. |
 | `utils.py` | `get_device("auto"|"cpu"|"cuda"|"mps")`, `set_seed`, `load_mat73`, and shape-encoding helpers. |
 
 ---
@@ -152,7 +154,7 @@ Analysis entry points require a checkpoint `.pt` file (or a run directory).
 The monkey id is inferred from `MonkeyE` or `MonkeyJ` in its path when omitted.
 
 `behavior.trials_from_dataset()` converts `KiraDataset` into monkey trials;
-`simulate.simulate_model()` generates model trials with policy paths.
+`simulate.simulate_model()` generates model trials with policy and hidden-state paths.
 
 ### `analysis.py` — one-shot report
 
@@ -170,11 +172,17 @@ checkpoint folder (or `--outdir`):
 | `psample_avg_policy.{png,svg}` | Mean P(sample) vs cumulative log-LR by time step. |
 | `psample_vs_evidence_scatter.{png,svg}` | Raw P(sample) observations vs evidence with one highlighted trial. |
 | `sampling_variability.{png,svg}` | Variability of P(sample) across trials at matched timestep and evidence. |
+| `hidden_by_timestep.{png,svg}` | Raw h0/h1 scatter coloured by time step. |
+| `hidden_by_evidence.{png,svg}` | Raw h0/h1 scatter coloured by cumulative evidence. |
+| `representation_noise_over_time.{png,svg}` | Hidden-state variability by timestep. |
+| `representation_noise_heatmap.{png,svg}` | Variability by timestep and evidence. |
+| `policy_representation.{png,svg}` | Action policy represented in two-dimensional hidden space. |
+| `permuted_evidence_hidden_trajectories.{png,svg}` | Hidden trajectories for reordered stimuli with matched evidence. |
 
 Plot-specific settings are edited directly at the corresponding calls in
-`analysis.py`; they are not command-line arguments. The old standalone `psample_*`
-entry points have been removed; their functionality now runs through `analysis.py`
-and the domain modules.
+`analysis.py`; they are not command-line arguments. The old standalone `psample_*` and
+`permuted_evidence_trajectories.py` entry points have been removed; their
+functionality now runs through `analysis.py` and the domain modules.
 
 Nested-CV training automatically writes `test_trajectory_nll_vs_hidden.png`
 and `.svg` beside `summary.csv`. Each outer-fold value is the mean, across

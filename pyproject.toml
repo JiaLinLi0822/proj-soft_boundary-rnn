@@ -1,0 +1,26 @@
+[project]
+name = "proj-soft-boundary-rnn"
+version = "0.1.0"
+description = "Soft-boundary recurrent neural networks for sequential evidence accumulation"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "gymnasium",
+    "h5py",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "scipy",
+    "seaborn",
+    "statsmodels",
+    "torch",
+    "tqdm",
+]
+
+[project.scripts]
+proj-soft-boundary-rnn = "proj_soft_boundary_rnn:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

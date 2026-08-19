@@ -167,21 +167,8 @@ def plot_sampling_variability(trials, out_path, timesteps=range(1, 11), evidence
 
     set_style()
     fig, axes = plt.subplots(1, 2, figsize=(6.55, 2.55))
-    norm = Normalize(-evidence_range, evidence_range)
-    for index in np.where(np.any(np.isfinite(values), axis=0))[0]:
-        axes[0].plot(
-            timesteps,
-            values[:, index],
-            "o-",
-            ms=3,
-            color=plt.cm.coolwarm(norm(centers[index])),
-        )
     axes[0].plot(timesteps, np.nanmean(values, axis=1), "s--", color="black", lw=2)
     axes[0].set(xlabel="Timestep", ylabel="Variability of p(sample) [std]")
-    fig.colorbar(
-        ScalarMappable(norm=norm, cmap="RdBu_r"),
-        ax=axes[0],
-    ).set_label("Cumulative evidence (LLR)")
     heatmap = axes[1].pcolormesh(
         np.r_[np.asarray(timesteps) - 0.5, timesteps[-1] + 0.5],
         edges,

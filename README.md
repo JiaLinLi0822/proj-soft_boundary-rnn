@@ -31,15 +31,21 @@ Package-specific detail lives in [`fit_tinyrnns/README.md`](fit_tinyrnns/README.
 
 ## Setup
 
-Python 3.10+ recommended. Create a virtual environment and install:
+The project uses [uv](https://docs.astral.sh/uv/) and is pinned to the Python
+version in `.python-version`. From the repository root, create/update the
+environment and install the locked dependencies:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-
-pip install torch numpy scipy h5py matplotlib tqdm scikit-learn \
-            gymnasium statsmodels
+uv sync
 ```
+
+Run a command inside the environment without activating it:
+
+```bash
+uv run python -c "import torch; print(torch.__version__)"
+```
+
+Alternatively, activate it with `source .venv/bin/activate`.
 
 - `fit_tinyrnns` and `train_taskoptrnns` use **PyTorch**.
 - `train_taskoptrnns` additionally needs **Gymnasium**.

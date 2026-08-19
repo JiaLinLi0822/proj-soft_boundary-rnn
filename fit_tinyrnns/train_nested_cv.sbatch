@@ -11,6 +11,8 @@
 #SBATCH --output=cluster/%x_%A_%a.out
 #SBATCH --error=cluster/%x_%A_%a.err
 #SBATCH --account=torch_pr_279_general
+#SBATCH --mail-type=END
+#SBATCH --mail-user=jl16057@nyu.edu
 
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:?Submit this script from the repository root}"

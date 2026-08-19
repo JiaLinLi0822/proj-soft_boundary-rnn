@@ -30,10 +30,10 @@ from simulate import simulate_model
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--monkey-id", type=int, choices=[1, 2], default=2)
+    parser.add_argument("--monkey-id", type=int, choices=[1, 2], default=1)
     parser.add_argument(
         "--ckpt",
-        default="fit_tinyrnns/runs/nested_cv/MonkeyJ/nestedcv_20260705_204203_seed0/cv_models/outer08/h2_l1_1p00000000em03/inner08.pt",
+        default="fit_tinyrnns/runs/nested_cv/MonkeyE/nestedcv_20260705_231541_seed0/cv_models/outer01/h2_l1_1p00000000em03/inner07.pt",
     )
     # "fit_tinyrnns/runs/nested_cv/MonkeyJ/nestedcv_20260705_204203_seed0/cv_models/outer08/h2_l1_1p00000000em03/inner08.pt"
     # "fit_tinyrnns/runs/nested_cv/MonkeyE/nestedcv_20260705_231541_seed0/cv_models/outer01/h2_l1_1p00000000em03/inner07.pt"
